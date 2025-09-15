@@ -1,0 +1,29 @@
+Been on this issues couples of days now, but getting a negative result, after installing the iptables and configuring the rules for accept and drop configuration, Pls help review and revised ASAP.
+
+Attached is the task/assessment; We have one of our websites up and running on our Nautilus infrastructure in Stratos DC. Our security team has raised a concern that right now Apache’s port i.e 8086 is open for all since there is no firewall installed on these hosts. So we have decided to add some security layer for these hosts and after discussions and recommendations we have come up with the following requirements:
+
+Install iptables and all its dependencies on each app host.
+
+Block incoming port 8086 on all apps for everyone except for LBR host.
+
+Make sure the rules remain, even after system reboot.
+
+Solution:
+login to the server 1: ssh ...
+go to root :sudo su -
+install the iptables : yum install ipservices -y
+enable ans start the services : systemctl enable iptables && systemctl start iptables
+Delete all the exisiting rules : iptables -F
+Add a new rule to allow traffic to LBR host from port 8086: iptables -A INPUT -p tcp --destination-port 8086 -s LBRHOSTIPADDR -j ACCEPT
+Add another rule to block incoming traffic 8086 on other apps: iptables -A INPUT -p tcp --destination-port 8086 -j DROP
+save the rules: service iptables save
+restart : systemctl restart iptables
+
+Checking:
+login into LBR HOST: shh ..
+send traffic to the server1 : curl -I tony@stapp01:8086
+we should see traffic gng.
+Hence Proved
+
+Learning:
+ Configuring new rules to IPTABLES AND verify it.
