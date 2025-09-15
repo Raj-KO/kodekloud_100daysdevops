@@ -1,0 +1,22 @@
+QUESTION:
+  In one of the service APACHE server is failing. Find out the reason for failure and fix it 
+  run the apache in 8086 port number
+
+Solution:
+login ti server1: ssh tony@stapp01
+check the status of APACHE: systemctl status httpd
+  it says the port is already occupied with other service
+get the service which runs on 8086 : ss -tlnp|grep 8086
+  O/P : sendmail service
+Go to sendmail service: vi /etc/sbin/sendmail.mc
+change the daemon port fro  8086 to 25(default port):
+restart the service: systemctl restart sendmail
+go to apache default path: vi /usr/httpd/conf/httpdconf
+check the port number and update it to 8086
+enable the service: systemctl enable httpd
+start the service: systemctl start httpd
+
+Learning:
+ 1. Knowing the blockage of the issue
+ 2. Figuring out the solution 
+ 3. Applying the soln
