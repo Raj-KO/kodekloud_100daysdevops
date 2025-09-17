@@ -1,0 +1,53 @@
+The system admins team of xFusionCorp Industries needs to deploy a new application on App Server 2 in Stratos Datacenter. They have some pre-requites to get ready that server for application deployment. Prepare the server as per requirements shared below:
+
+
+
+1. Install and configure nginx on App Server 2.
+
+
+2. On App Server 2 there is a self signed SSL certificate and key present at location /tmp/nautilus.crt and /tmp/nautilus.key. Move them to some appropriate location and deploy the same in Nginx.
+
+
+3. Create an index.html file with content Welcome! under Nginx document root.
+
+
+4. For final testing try to access the App Server 2 link (either hostname or IP) from jump host using curl command. For example curl -Ik https://<app-server-ip>/.
+
+Solution:
+ install Ngnix: yum install ngnix -y
+      O/P: NO NGNIX FOUND
+    NGNIX PACKAGE WILL BE FOUND IN EPEL REPO:
+    go to the above path and install the NGINX
+     S1: YUM INSTALL EPEL-REPO
+     S2:YUM INSTALL NGINX -y
+
+S2: MV .crt, .key files to appropriate folder
+    mkdir /etc/nginx/ssl
+    mv /tmp/nautilus.crt /etc/nginx/ssl
+    mv /tmp/nautilus.key /etc/nginx/ssl
+
+open nginx.conf file
+    modify the configurations
+    go to server section 
+      add ip address
+      change the path of .key,.crt files
+
+s3: create index.html
+    path : /usr/share/nginx/html
+    cd the above path
+    rm index.html
+    vi index.html -- > Welcome
+s4:
+  nginx -t
+  systemctl enable nginx
+  systemctl start nginx
+
+Testing:
+ jumphost : curl -Iktony@ https://stapp01/
+
+Learning:
+ 1.How to install Nginx
+2. Pre-requites required to access nginx
+ 3. how to deploy files in nginx
+4. testing the connection
+    
