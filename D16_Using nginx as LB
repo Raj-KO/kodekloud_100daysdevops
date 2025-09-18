@@ -1,0 +1,53 @@
+Day by day traffic is increasing on one of the websites managed by the Nautilus production support team. Therefore, the team has observed a degradation in website performance. Following discussions about this issue, the team has decided to deploy this application on a high availability stack i.e on Nautilus infra in Stratos DC. They started the migration last month and it is almost done, as only the LBR server configuration is pending. Configure LBR server as per the information given below:
+
+
+
+a. Install nginx on LBR (load balancer) server.
+
+
+b. Configure load-balancing with the an http context making use of all App Servers. Ensure that you update only the main Nginx configuration file located at /etc/nginx/nginx.conf.
+
+
+c. Make sure you do not update the apache port that is already defined in the apache configuration on all app servers, also make sure apache service is up and running on all app servers.
+
+
+d. Once done, you can access the website using StaticApp button on the top bar.
+Solution:
+ S-1 login to lb server : ssh 
+      install nginx :yum instal epel-release && yum install nginx -y
+
+S2: login to appserver1, appserver2, appserver3 and get the port number in which apache is running
+     sudo ss- tulnp | grep httpd
+
+s3: google and get the format for nginx as LB 
+
+Open nginx.conf file: 
+ go to the server section above and paste the upstream
+    upstream myapp1 {
+        server srv1.example.com;
+        server srv2.example.com;
+        server srv3.example.com;
+    }
+
+modify the above servername with actual server names
+upstream backendservers {
+        server stapp01:3001;
+        server stapp02:3001;
+        server stapp03:3001;
+    }
+
+add the location in the location sections:
+ location / {
+            proxy_pass http://myapp1;
+        }
+
+save it and run the nginx
+
+s4: nginx -t && systemctl start nginx && systemctl status nginx
+
+Learning:
+1.Knowing that Nginx can be used as LB 
+2. Different kinds of Nginx LB
+3. Configurating those
+
+  
