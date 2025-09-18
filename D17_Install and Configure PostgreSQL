@@ -1,0 +1,16 @@
+On DB Server, postgress is already installed
+
+1. CREATE A USER "DEMOUSER" WITH passwordas "demopassword"
+2. CREATE A DB NAMED "DEMODB" AND GRANT ALL PERLMISSIONS TO THE USER
+
+SOLUTION:
+Login to DBServer
+switch to postgress - sudo -i -u postgres
+  psql
+user creation: CREATE USER "demouser" with PASSWORD 'demopassword';
+db creation: CREATE DATABASE "DEMODB";
+ALL PERMISSION:
+  GRANT ALL PRIVILEGES ON demodb TO demouser ;
+to check
+  databse : \l
+  database user : \du
