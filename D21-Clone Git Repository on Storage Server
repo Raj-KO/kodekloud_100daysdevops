@@ -1,0 +1,9 @@
+Log in to the server
+
+cmd to install git: yum install git -y
+mkdir /opt/official.git
+git init --bare /opt/official.git
+
+check:
+git status 
+ 
